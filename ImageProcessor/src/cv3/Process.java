@@ -42,6 +42,10 @@ public class Process implements Initializable {
 	public static final int B420 = 9;
 	public static final int B411 = 10;
 	
+	public Matrix y;
+	public Matrix cB;
+	public Matrix cR;
+	
 	public void rButtonPressed(ActionEvent evt) {	
 		
 		getComponent(RED).show();
@@ -87,6 +91,10 @@ public class Process implements Initializable {
 	
 	
 	public void downSample(int opID) {
+		y = new Matrix(colorTransform.getY().getArray());
+		cB = new Matrix(colorTransform.getCb().getArray());
+		cR = new Matrix(colorTransform.getCr().getArray());
+		
 		switch (opID) {
 		case B444:
 			getComponent(Y).show();
@@ -118,17 +126,18 @@ public class Process implements Initializable {
 	
 	public void QualityButtonPressed(ActionEvent evt) {
 		quality = new Quality();		
+		
 		double valueMSE = quality.getMse(colorTransformOrig.getRed(), colorTransform.getRed());
 		valueMSE += quality.getMse(colorTransformOrig.getGreen(), colorTransform.getGreen());
 		valueMSE += valueMSE + quality.getMse(colorTransformOrig.getBlue(), colorTransform.getBlue());
-		valueMSE = valueMSE/3;
-		MSE.setText(String.valueOf(valueMSE));
+		valueMSE = valueMSE/3.0;
+		MSE.setText(Double.toString(valueMSE));
 		
 		double valuePSNR = quality.getPsnr(colorTransformOrig.getRed(), colorTransform.getRed());
 		valuePSNR += quality.getPsnr(colorTransformOrig.getGreen(), colorTransform.getGreen());
 		valuePSNR += valuePSNR + quality.getPsnr(colorTransformOrig.getBlue(), colorTransform.getBlue());
-		valuePSNR = valuePSNR/3;
-		PSNR.setText(String.valueOf(valuePSNR));
+		valuePSNR = valuePSNR/3.0;
+		PSNR.setText(Double.toString(valuePSNR));
 	}
 	
 	public void OverSampleButtonPressed(ActionEvent evt) {

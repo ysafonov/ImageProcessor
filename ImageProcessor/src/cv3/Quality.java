@@ -9,10 +9,10 @@ public class Quality {
 		{
 			for(int j=0; j < (original[0].length-1); j++)
 			{
-				MSE += (original[i][j]-edited[i][j])*(original[i][j]-edited[i][j]);
+				MSE += Math.pow((original[i][j]-edited[i][j]),2);
 			}
 		}
-		return 1/(original.length*original[0].length)*MSE;
+		return MSE/(original.length*original[0].length);
 	}
 	
 	public double getPsnr(int[][] original, int[][] edited) 
