@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="50.0" minWidth="50.0" prefHeight="203.0" prefWidth="244.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cv2.Process">
+   <children>
+      <Button fx:id="RED" layoutX="19.0" layoutY="52.0" mnemonicParsing="false" onAction="#rButtonPressed" prefHeight="48.0" prefWidth="63.0" text="red" />
+      <Button layoutX="19.0" layoutY="108.0" mnemonicParsing="false" onAction="#yButtonPressed" prefHeight="48.0" prefWidth="63.0" text="Y" />
+      <Button layoutX="19.0" layoutY="166.0" mnemonicParsing="false" onAction="#b444ButtonPressed" text="4:4:4" />
+      <Button fx:id="GREEN" layoutX="93.0" layoutY="52.0" mnemonicParsing="false" onAction="#gButtonPressed" prefHeight="48.0" prefWidth="63.0" text="green" />
+      <Button layoutX="93.0" layoutY="108.0" mnemonicParsing="false" onAction="#cbButtonPressed" prefHeight="48.0" prefWidth="63.0" text="Cb" />
+      <Button layoutX="74.0" layoutY="166.0" mnemonicParsing="false" onAction="#b422ButtonPressed" text="4:2:2" />
+      <Button layoutX="166.0" layoutY="52.0" mnemonicParsing="false" onAction="#bButtonPressed" prefHeight="48.0" prefWidth="63.0" text="blue" />
+      <Button layoutX="166.0" layoutY="108.0" mnemonicParsing="false" onAction="#crButtonPressed" prefHeight="48.0" prefWidth="63.0" text="Cr" />
+      <Button layoutX="131.0" layoutY="166.0" mnemonicParsing="false" onAction="#b411ButtonPressed" text="4:1:1" />
+      <Button layoutX="188.0" layoutY="166.0" mnemonicParsing="false" onAction="#b420ButtonPressed" text="4:2:0" />
+      <Label layoutX="58.0" layoutY="14.0" prefHeight="17.0" prefWidth="147.0" text="Image application">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
