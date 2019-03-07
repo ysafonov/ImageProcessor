@@ -143,6 +143,32 @@ public class Process implements Initializable {
 		colorTransform.convertYcBcRToRGB().show();
 	}
 	
+	public void dctButton()
+	{		
+		
+		y = new Matrix(colorTransform.getY().getArray());
+		cB = new Matrix(colorTransform.getCb().getArray());
+		cR = new Matrix(colorTransform.getCr().getArray());
+		
+		int size = y.getColumnDimension();
+		Matrix A = transformMatrix.getDctMatrix(size);
+		
+		DCTmatrixY = colorTransform.transform(size, A, y);
+		DCTmatrixcB = colorTransform.transform(size, A, cB);
+		DCTmatrixcR = colorTransform.transform(size, A, cR);	
+	}
+	
+	public void idctButton()
+	{		
+		int size = y.getColumnDimension();
+		Matrix B = transformMatrix.getDctMatrix(size);
+		y = colorTransform.inverseTransform(size, B , DCTmatrixY);
+		cB = colorTransform.inverseTransform(size, B, DCTmatrixcB);
+		cR = colorTransform.inverseTransform(size, B, DCTmatrixcR);	
+	}
+	
+	
+	
 	public void qualitySliderMouseDrag(MouseEvent event)
 	{
 		qQuality = (int) Math.round(QualitySlider.getValue());
@@ -169,6 +195,7 @@ public class Process implements Initializable {
 			for(int j = 0; j < inputMat.getRowDimension(); j = j+n)
 			{
 				tempMat = colorTransform.getMatrix(inputMat,i,j,n);
+				tempMat = colorTransform.transform(n, transformMatrix.getDctMatrix(n), tempMat);
 				tempMat = tempMat.arrayRightDivide(quantMat);
 				outputMat = colorTransform.nSamplesTogether(inputMat,tempMat,i,j,n);
 			}
@@ -189,6 +216,7 @@ public class Process implements Initializable {
 			{
 				tempMat = colorTransform.getMatrix(inputMat,i,j,n);
 				tempMat = tempMat.arrayTimes(quantMat);
+				tempMat = colorTransform.inverseTransform(n, transformMatrix.getDctMatrix(n) , tempMat);
 				outputMat = colorTransform.setMatrix(inputMat, tempMat,i,j,n);
 			}
 		}
@@ -335,30 +363,6 @@ public class Process implements Initializable {
 	
 	
 	
-	
-	public void dctButton()
-	{		
-		
-		y = new Matrix(colorTransform.getY().getArray());
-		cB = new Matrix(colorTransform.getCb().getArray());
-		cR = new Matrix(colorTransform.getCr().getArray());
-		
-		int size = y.getColumnDimension();
-		Matrix A = transformMatrix.getDctMatrix(size);
-		
-		DCTmatrixY = colorTransform.transform(size, A, y);
-		DCTmatrixcB = colorTransform.transform(size, A, cB);
-		DCTmatrixcR = colorTransform.transform(size, A, cR);	
-	}
-	
-	public void idctButton()
-	{		
-		int size = y.getColumnDimension();
-		Matrix B = transformMatrix.getDctMatrix(size);
-		y = colorTransform.inverseTransform(size, B , DCTmatrixY);
-		cB = colorTransform.inverseTransform(size, B, DCTmatrixcB);
-		cR = colorTransform.inverseTransform(size, B, DCTmatrixcR);	
-	}
 	
 	
 	
