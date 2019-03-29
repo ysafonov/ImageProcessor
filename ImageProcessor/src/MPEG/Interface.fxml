@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane minHeight="441.0" minWidth="244.0" prefHeight="450.0" prefWidth="538.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MPEG.Process">
    <children>
@@ -36,6 +37,10 @@
                               <Label layoutX="215.0" layoutY="382.0" prefHeight="25.0" prefWidth="126.0" text="MPEG application v1.0" />
                               <RadioButton fx:id="radioButtonFirst" layoutX="16.0" layoutY="20.0" mnemonicParsing="false" text="Show first frame" />
                               <RadioButton fx:id="radioButtonSecond" layoutX="16.0" layoutY="46.0" mnemonicParsing="false" text="Show second frame" />
+                              <Button layoutX="13.0" layoutY="161.0" mnemonicParsing="false" onAction="#processFirstIamge" prefHeight="25.0" prefWidth="173.0" text="Process First image" />
+                              <Button layoutX="13.0" layoutY="213.0" mnemonicParsing="false" onAction="#processSecondIamge" prefHeight="25.0" prefWidth="173.0" text="Process Second image" />
+                              <Text layoutX="58.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First: DCT -&gt; Q " />
+                              <Text layoutX="22.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First: DCT -&gt; Q -&gt; IQ -&gt; IDCT" />
                            </children>
                         </AnchorPane>
                   </content>

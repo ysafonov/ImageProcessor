@@ -68,9 +68,7 @@ public class Process implements Initializable {
 
 	private TransformMatrix transformMatrix = new TransformMatrix();
 	
-	public Matrix y;
-	public Matrix cB;
-	public Matrix cR;
+	
 	
 	
 	public void loadFrames(ActionEvent evt) {
@@ -85,6 +83,12 @@ public class Process implements Initializable {
 		setImageView(getComponent(GREEN), this.currentImageView);
 	}
 	
+	public void DpcmButtonPressed(ActionEvent event)
+	{
+	
+	}
+
+
 	public void bButtonPressed(ActionEvent evt) {
 		setImageView(getComponent(BLUE), this.currentImageView);
 	}
@@ -103,43 +107,85 @@ public class Process implements Initializable {
 	}
 	
 	public void quantizationButton(ActionEvent evt) {
-		Quantization(quantization_block_size);
+		// Quantization(quantization_block_size);
 	}
 	
 	public void  iquantizationButton(ActionEvent evt) {
-		IQuantization(quantization_block_size);
+		// IQuantization(quantization_block_size);
 	}
 	
 	
-	private void Quantization (int n)
+	public void dctButton(ActionEvent evt) {
+		
+	}
+	public void idctButton(ActionEvent evt) {
+		
+	}
+
+	
+	
+	public void processFirstIamge(ActionEvent evt) {
+		Quantization(quantization_block_size, this.colorTransformFirst);
+		setImageView(colorTransformFirst.convertYcBcRToRGB(), this.currentImageView);
+	}
+	
+	public void  processSecondIamge(ActionEvent evt) {
+		Quantization(quantization_block_size, this.colorTransformFirst);
+		IQuantization(quantization_block_size, this.colorTransformFirst);
+	}
+	
+	public void subtraction (ColorTransform first, ColorTransform second) {
+		
+		Matrix y_1 = new Matrix(first.getY().getArray());
+		Matrix cB_1 = new Matrix(first.getCb().getArray());
+		Matrix cR_1 = new Matrix(first.getCr().getArray());
+		
+		Matrix y_2 = new Matrix(second.getY().getArray());
+		Matrix cB_2 = new Matrix(second.getCb().getArray());
+		Matrix cR_2 = new Matrix(second.getCr().getArray());
+		
+		
+	
+	}
+	
+	
+	
+	private void Quantization (int n, ColorTransform colorTransform)
 	{
-		y = new Matrix(colorTransform.getY().getArray());
-		cB = new Matrix(colorTransform.getCb().getArray());
-		cR = new Matrix(colorTransform.getCr().getArray());
+		Matrix y = new Matrix(colorTransform.getY().getArray());
+		Matrix cB = new Matrix(colorTransform.getCb().getArray());
+		Matrix cR = new Matrix(colorTransform.getCr().getArray());
 		
 		y = QuantizationCycle(y,colorTransform.getQuantMatrix8Brightness(qQuality),n);
 		cB = QuantizationCycle(cB,colorTransform.getQuantMatrix8Color(qQuality),n);
 		cR = QuantizationCycle(cR,colorTransform.getQuantMatrix8Color(qQuality),n);
+		setYcBcR(y, cB, cR, colorTransform);
 	}
 
-	public void IQuantization(int n)
+	public void IQuantization(int n, ColorTransform colorTransform)
 	{		
+		Matrix y = new Matrix(colorTransform.getY().getArray());
+		Matrix cB = new Matrix(colorTransform.getCb().getArray());
+		Matrix cR = new Matrix(colorTransform.getCr().getArray());
+		
 		y = IQuantizationCycle(y,colorTransform.getQuantMatrix8Brightness(qQuality),n);
 		cB = IQuantizationCycle(cB,colorTransform.getQuantMatrix8Color(qQuality),n);
 		cR = IQuantizationCycle(cR,colorTransform.getQuantMatrix8Color(qQuality),n);
-		
+		setYcBcR(y, cB, cR, colorTransform);
+	}
+	
+	public void setYcBcR(Matrix y, Matrix cB, Matrix cR, ColorTransform colorTransform) {
 		colorTransform.setY(y);
 		colorTransform.setCb(cB);
 		colorTransform.setCr(cR);
-		colorTransform.convertYcBcRToRGB().show();
 	}
 	
-	public void dctButton()
+	public void dctButton(ColorTransform colorTransform)
 	{		
 		
-		y = new Matrix(colorTransform.getY().getArray());
-		cB = new Matrix(colorTransform.getCb().getArray());
-		cR = new Matrix(colorTransform.getCr().getArray());
+		Matrix y = new Matrix(colorTransform.getY().getArray());
+		Matrix cB = new Matrix(colorTransform.getCb().getArray());
+		Matrix cR = new Matrix(colorTransform.getCr().getArray());
 		
 		int size = y.getColumnDimension();
 		Matrix A = transformMatrix.getDctMatrix(size);
@@ -149,13 +195,13 @@ public class Process implements Initializable {
 		DCTmatrixcR = colorTransform.transform(size, A, cR);	
 	}
 	
-	public void idctButton()
+	public void idctButton(ColorTransform colorTransform)
 	{		
-		int size = y.getColumnDimension();
-		Matrix B = transformMatrix.getDctMatrix(size);
-		y = colorTransform.inverseTransform(size, B , DCTmatrixY);
-		cB = colorTransform.inverseTransform(size, B, DCTmatrixcB);
-		cR = colorTransform.inverseTransform(size, B, DCTmatrixcR);	
+		// int size = y.getColumnDimension();
+		// Matrix B = transformMatrix.getDctMatrix(size);
+		// Matrix y = colorTransform.inverseTransform(size, B , DCTmatrixY);
+		// Matrix cB = colorTransform.inverseTransform(size, B, DCTmatrixcB);
+		//  cR = colorTransform.inverseTransform(size, B, DCTmatrixcR);	
 	}
 	
 	
@@ -170,8 +216,9 @@ public class Process implements Initializable {
 	{
 		qQuality = (int) Math.round(QualitySlider.getValue());
 		QualityLabel.setText(String.valueOf(qQuality));
-		colorTransform.getQuantMatrix8Brightness(qQuality);
-		colorTransform.getQuantMatrix8Color(qQuality);
+		ColorTransform tmp = getColorTransform();
+		tmp.getQuantMatrix8Brightness(qQuality);
+		tmp.getQuantMatrix8Color(qQuality);
 		
 	}
 	
@@ -179,16 +226,17 @@ public class Process implements Initializable {
 	private Matrix QuantizationCycle(Matrix inputMat, Matrix quantMat , int n)
 	{
 		Matrix tempMat = new Matrix(n,n);
-		Matrix outputMat = new Matrix(inputMat.getColumnDimension(),inputMat.getColumnDimension());
+		Matrix outputMat = new Matrix(inputMat.getRowDimension(),inputMat.getColumnDimension());
+		ColorTransform tmp = getColorTransform();
 		
 		for(int i = 0; i < inputMat.getColumnDimension(); i = i+n)
 		{
 			for(int j = 0; j < inputMat.getRowDimension(); j = j+n)
 			{
-				tempMat = colorTransform.getMatrix(inputMat,i,j,n);
-				tempMat = colorTransform.transform(n, transformMatrix.getDctMatrix(n), tempMat);
+				tempMat = tmp.getMatrix(inputMat,i,j,n);
+				tempMat = tmp.transform(n, transformMatrix.getDctMatrix(n), tempMat);
 				tempMat = tempMat.arrayRightDivide(quantMat);
-				outputMat = colorTransform.nSamplesTogether(inputMat,tempMat,i,j,n);
+				outputMat = tmp.nSamplesTogether(inputMat,tempMat,i,j,n);
 			}
 		}
 		return outputMat;
@@ -200,15 +248,16 @@ public class Process implements Initializable {
 	{
 		Matrix tempMat = new Matrix(n,n);
 		Matrix outputMat = new Matrix(inputMat.getColumnDimension(),inputMat.getColumnDimension());
+		ColorTransform tmp = getColorTransform();
 		
 		for(int i = 0; i < inputMat.getColumnDimension(); i = i+n)
 		{
 			for(int j = 0; j < inputMat.getRowDimension(); j = j+n)
 			{
-				tempMat = colorTransform.getMatrix(inputMat,i,j,n);
+				tempMat = tmp.getMatrix(inputMat,i,j,n);
 				tempMat = tempMat.arrayTimes(quantMat);
-				tempMat = colorTransform.inverseTransform(n, transformMatrix.getDctMatrix(n) , tempMat);
-				outputMat = colorTransform.setMatrix(inputMat, tempMat,i,j,n);
+				tempMat = tmp.inverseTransform(n, transformMatrix.getDctMatrix(n) , tempMat);
+				outputMat = tmp.setMatrix(inputMat, tempMat,i,j,n);
 			}
 		}
 		return outputMat;
@@ -217,34 +266,35 @@ public class Process implements Initializable {
 	
 	public ImagePlus getComponent(int component) {
 		ImagePlus imagePlus = null;
+		ColorTransform tmp = this.getColorTransform();
 		switch (component) {
 		case RED:
-			imagePlus = colorTransform.setImageFromRGB(colorTransform.getImageWidth(),
-					colorTransform.getImageHeight(), colorTransform.getRed(), "RED");
+			imagePlus = tmp.setImageFromRGB(tmp.getImageWidth(),
+					tmp.getImageHeight(), tmp.getRed(), "RED");
 			break;
 			
 		case GREEN:
-			imagePlus = colorTransform.setImageFromRGB(colorTransform.getImageWidth(),
-					colorTransform.getImageHeight(), colorTransform.getGreen(), "GREEN");
+			imagePlus = tmp.setImageFromRGB(tmp.getImageWidth(),
+					tmp.getImageHeight(), tmp.getGreen(), "GREEN");
 			break;
 		case BLUE:
-			imagePlus = colorTransform.setImageFromRGB(colorTransform.getImageWidth(),
-					colorTransform.getImageHeight(), colorTransform.getBlue(), "BLUE");
+			imagePlus = tmp.setImageFromRGB(tmp.getImageWidth(),
+					tmp.getImageHeight(), tmp.getBlue(), "BLUE");
 			break;
 
 		case Y:
-			imagePlus = colorTransform.setImageFromRGB(colorTransform.getImageWidth(),
-					colorTransform.getImageHeight(), colorTransform.getY(), "Y");
+			imagePlus = tmp.setImageFromRGB(tmp.getImageWidth(),
+					tmp.getImageHeight(), tmp.getY(), "Y");
 			break;
 			
 		case CB:
-			imagePlus = colorTransform.setImageFromRGB(colorTransform.getImageWidth(),
-					colorTransform.getImageHeight(), colorTransform.getCb(), "cb");
+			imagePlus = tmp.setImageFromRGB(tmp.getImageWidth(),
+					tmp.getImageHeight(), tmp.getCb(), "cb");
 			break;
 			
 		case CR:
-			imagePlus = colorTransform.setImageFromRGB(colorTransform.getImageWidth(),
-					colorTransform.getImageHeight(), colorTransform.getCr(), "Cr");
+			imagePlus = tmp.setImageFromRGB(tmp.getImageWidth(),
+					tmp.getImageHeight(), tmp.getCr(), "Cr");
 			break;
 		default:
 			break;
@@ -255,48 +305,77 @@ public class Process implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
 		loadOriginalImages();
-		
-		this.colorTransform = new ColorTransform(imagePlusFirst.getBufferedImage());
-		this.colorTransform.getRGB();
-		
-		ToggleGroup group = new ToggleGroup();
+		setRadioButton();
+		setQuality();
+		colorTransformFirst.getQuantMatrix8Brightness(qQuality);
+		colorTransformFirst.getQuantMatrix8Color(qQuality);
+		// TransformMatrix a = new TransformMatrix();
+		// a.getDctMatrix(8);
+	}
+	
+	
+ 	private void loadOriginalImages() {
+		this.imagePlusFirst = new ImagePlus("images/pomaly.jpg");
+		this.imagePlusSecond = new ImagePlus("images/pomaly2.jpg");
+		setImageView(imagePlusFirst, this.currentImageView);
+		this.colorTransformFirst = new ColorTransform(imagePlusFirst.getBufferedImage());
+		this.colorTransformSecond = new ColorTransform(imagePlusSecond.getBufferedImage());
+		this.colorTransformFirst.getRGB();
+		this.colorTransformSecond.getRGB();
+		this.colorTransformFirst.convertRgbToYcBcR();
+		this.colorTransformSecond.convertRgbToYcBcR();
+	}
+ 	
+ 	private void setRadioButton () {
+ 		group = new ToggleGroup();
 		radioButtonFirst.setToggleGroup(group);
 		radioButtonFirst.setId("First");
 		radioButtonFirst.setSelected(true);
 		radioButtonSecond.setToggleGroup(group);
 		radioButtonSecond.setId("Second");
 		
+		radioButtonFirst.setOnAction((ActionEvent e) -> {
+			setImageView(imagePlusFirst, this.currentImageView);
+		});
+		
+		radioButtonSecond.setOnAction((ActionEvent e) -> {
+			setImageView(imagePlusSecond, this.currentImageView);
+		});
+ 	}
+ 	
+	private void setQuality() {
 		qQuality = 50;
 		QualityLabel.setText(String.valueOf(qQuality));
 		QualitySlider.setValue(50);
-		
-		
-		this.colorTransform.convertRgbToYcBcR();
-		colorTransform.getQuantMatrix8Brightness(qQuality);
-		colorTransform.getQuantMatrix8Color(qQuality);
-		TransformMatrix a = new TransformMatrix();
-		a.getDctMatrix(8);
 	}
+
+
 	
 	
-	private ColorTransform getColorTransform() throws Exception {
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private ColorTransform getColorTransform()  {
 		RadioButton selectedRadioButton = (RadioButton) group.getSelectedToggle();
-		if (selectedRadioButton == null) throw new Exception("Toggle button is not selected!");
+		if (selectedRadioButton == null) return null;
 		switch (selectedRadioButton.getId()) {
 		case "First":
 			return this.colorTransformFirst;
 		case "Second":
 			return this.colorTransformSecond;
 		}
-		return null
+		return null;
 	}
-	
- 	private void loadOriginalImages() {
-		this.imagePlusFirst = new ImagePlus("images/lena_std.jpg");
-		this.imagePlusSecond = new ImagePlus("images/lena_std.jpg");
-		setImageView(imagePlusFirst, this.currentImageView);
-	}
+
 	
 	private void setImageView(ImagePlus imagePlus, ImageView imageView) {
 		BufferedImage bf = imagePlus.getBufferedImage();

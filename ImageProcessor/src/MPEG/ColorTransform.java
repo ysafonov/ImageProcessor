@@ -136,25 +136,6 @@ public class ColorTransform {
 		return setImageFromRGB(x.getColumnDimension(), x.getRowDimension(), x, component);
 	}
 
-	public ImagePlus get422(Matrix x, String component) {
-		Matrix outputMatrix = downSample(x);
-		return setImageFromRGB(outputMatrix.getColumnDimension(), outputMatrix.getRowDimension(), outputMatrix,
-				component);
-	}
-
-	public ImagePlus get420(Matrix x, String component) {
-		Matrix temp = downSample(x.transpose());
-		Matrix outputMatrix = downSample(temp.transpose());
-		return setImageFromRGB(outputMatrix.getColumnDimension(), outputMatrix.getRowDimension(), outputMatrix,
-				component);
-	}
-
-	public ImagePlus get411(Matrix x, String component) {
-		Matrix temp = downSample(x);
-		Matrix outputMatrix = downSample(temp);
-		return setImageFromRGB(outputMatrix.getColumnDimension(), outputMatrix.getRowDimension(), outputMatrix,
-				component);
-	}
 
 	public Matrix overSample(Matrix mat) {
 		Matrix newMat = new Matrix(mat.getRowDimension(), mat.getColumnDimension() * 2);
