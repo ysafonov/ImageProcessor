@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="441.0" minWidth="244.0" prefHeight="450.0" prefWidth="544.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MPEG.Process">
+   <children>
+      <BorderPane prefHeight="459.0" prefWidth="544.0" style="-fx-background-color: #00bfff;">
+         <center>
+            <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="571.0" style="-fx-background-color: #00bfff;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab style="-fx-background-color: #2ECC71;" text="Coder">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="430.0" prefWidth="561.0" style="-fx-background-color: #2ECC71;">
+                           <children>
+                              <Button fx:id="RED" layoutX="14.0" layoutY="97.0" mnemonicParsing="false" onAction="#rButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Red" />
+                              <Slider fx:id="QualitySlider" layoutX="16.0" layoutY="153.0" onMouseDragged="#qualitySliderMouseDrag" onMouseReleased="#qualitySliderMouseRelease" prefHeight="20.0" prefWidth="168.0" />
+                              <Button layoutX="14.0" layoutY="59.0" mnemonicParsing="false" onAction="#yButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Y" />
+                              <Button fx:id="GREEN" layoutX="75.0" layoutY="97.0" mnemonicParsing="false" onAction="#gButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Green" />
+                              <Button layoutX="75.0" layoutY="59.0" mnemonicParsing="false" onAction="#cbButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Cb" />
+                              <Button layoutX="136.0" layoutY="97.0" mnemonicParsing="false" onAction="#bButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Blue" />
+                              <Button layoutX="136.0" layoutY="59.0" mnemonicParsing="false" onAction="#crButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Cr" />
+                              <Label fx:id="QualityLabel" contentDisplay="CENTER" layoutX="65.0" layoutY="135.0" prefHeight="17.0" prefWidth="32.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton fx:id="radioButtonFirst" layoutX="16.0" layoutY="8.0" mnemonicParsing="false" text="Show first frame" />
+                              <RadioButton fx:id="radioButtonSecond" layoutX="16.0" layoutY="34.0" mnemonicParsing="false" text="Show second frame" />
+                              <Button layoutX="11.0" layoutY="366.0" mnemonicParsing="false" onAction="#dpcmWithoutPrediction" prefHeight="44.0" prefWidth="53.0" text="DPCM " />
+                              <Button layoutX="73.0" layoutY="366.0" mnemonicParsing="false" onAction="#extendMatrix" prefHeight="44.0" prefWidth="71.0" text="Extend Matrix" textAlignment="CENTER" wrapText="true" />
+                              <ImageView fx:id="currentImageView" fitHeight="319.0" fitWidth="322.0" layoutX="203.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+                              <Text layoutX="18.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quality:" />
+                              <Text layoutX="18.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Block size:" />
+                              <RadioButton fx:id="size2x2" layoutX="43.0" layoutY="201.0" mnemonicParsing="false" text="2x2" />
+                              <RadioButton fx:id="size4x4" layoutX="43.0" layoutY="227.0" mnemonicParsing="false" text="4x4" />
+                              <RadioButton fx:id="size8x8" layoutX="98.0" layoutY="201.0" mnemonicParsing="false" text="8x8" />
+                              <RadioButton fx:id="size16x16" layoutX="98.0" layoutY="226.0" mnemonicParsing="false" text="16x16" />
+                              <Text layoutX="18.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Movement prediction:" />
+                              <RadioButton fx:id="fullSearch" layoutX="44.0" layoutY="274.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="113.0" text="Full search" />
+                              <RadioButton fx:id="treeSearch" layoutX="44.0" layoutY="295.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="113.0" text="Tree step search" />
+                              <RadioButton fx:id="oneSeach" layoutX="44.0" layoutY="316.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="One a time search" />
+                              <RadioButton fx:id="halfSearch" layoutX="45.0" layoutY="337.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="128.0" text="Half pixel search" />
+                              <Button layoutX="155.0" layoutY="366.0" mnemonicParsing="false" onAction="#movementVectors" prefHeight="45.0" prefWidth="100.0" text="Movement vectors" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="268.0" layoutY="365.0" mnemonicParsing="false" onAction="#movementPrediction" prefHeight="45.0" prefWidth="88.0" text="Prediction" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="364.0" layoutY="365.0" mnemonicParsing="false" onAction="#dpcmAfterPrediction" prefHeight="45.0" prefWidth="58.0" text="DPCM" textAlignment="CENTER" wrapText="true" />
+                              <Button layoutX="433.0" layoutY="365.0" mnemonicParsing="false" onAction="#sendToDecoder" prefHeight="45.0" prefWidth="97.0" text="Send  &gt;&gt;" textAlignment="CENTER" wrapText="true" />
+                              <Label fx:id="sadOriginal" contentDisplay="CENTER" layoutX="260.0" layoutY="336.0" prefHeight="19.0" prefWidth="80.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="184.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Original SAD:" wrappingWidth="82.716796875" />
+                              <Label fx:id="sadPrediction" contentDisplay="CENTER" layoutX="433.0" layoutY="336.0" prefHeight="19.0" prefWidth="95.0" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="13.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="345.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prediction SAD:" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab style="-fx-background-color: #AED6F1;" text="Decoder">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: #AED6F1;">
+                           <children>
+                              <ImageView fx:id="decoderImageView" fitHeight="319.0" fitWidth="322.0" layoutX="203.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+                              <Button fx:id="buttonY" disable="true" layoutX="14.0" layoutY="176.0" mnemonicParsing="false" onAction="#yButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Y" />
+                              <Button fx:id="buttonCb" disable="true" layoutX="75.0" layoutY="176.0" mnemonicParsing="false" onAction="#cbButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Cb" />
+                              <Button fx:id="buttonCr" disable="true" layoutX="136.0" layoutY="176.0" mnemonicParsing="false" onAction="#crButtonPressed" prefHeight="32.0" prefWidth="50.0" text="Cr" />
+                              <RadioButton fx:id="radioButtonDecoderFirst" layoutX="14.0" layoutY="32.0" mnemonicParsing="false" text="Show first frame" />
+                              <RadioButton fx:id="radioButtonDecoderSecond" layoutX="14.0" layoutY="58.0" mnemonicParsing="false" text="Show second frame" />
+                              <Button layoutX="14.0" layoutY="132.0" mnemonicParsing="false" onAction="#decondeSecondImage" prefHeight="32.0" prefWidth="171.0" text="Decode Second Image" />
+                              <Button layoutX="14.0" layoutY="90.0" mnemonicParsing="false" onAction="#decondeFirstImage" prefHeight="32.0" prefWidth="171.0" text="Decode First Image" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
