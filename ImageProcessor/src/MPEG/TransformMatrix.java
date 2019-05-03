@@ -2,6 +2,12 @@ package MPEG;
 
 import Jama.Matrix;
 
+/**
+ * This java class contains class for achieving DCT and WHT transformation.
+ * 
+ * @author Yehor Safonov; id: 185942
+ */
+
 public class TransformMatrix {
 
 	public Matrix getDctMatrix(int size) {
@@ -17,22 +23,19 @@ public class TransformMatrix {
 		}
 		return DCTmatrix;
 	}
-	
-	
-	public Matrix getWhtMatrix (int size)
-	{
-		Matrix WHTmatrix = new Matrix(size,size);
+
+	public Matrix getWhtMatrix(int size) {
+		Matrix WHTmatrix = new Matrix(size, size);
 		Matrix Init = new Matrix(1, 1);
 		Init.set(0, 0, 1);
-		for(int i=2; i<=size; i=2*i)
-		{
-			WHTmatrix.setMatrix(0,i/2-1,0,i/2-1,Init);
-			WHTmatrix.setMatrix(0,i/2-1,i/2,i-1,Init);
-			WHTmatrix.setMatrix(i/2,i-1,0,i/2-1,Init);
-			WHTmatrix.setMatrix(i/2,i-1,i/2,i-1,Init.uminus());
+		for (int i = 2; i <= size; i = 2 * i) {
+			WHTmatrix.setMatrix(0, i / 2 - 1, 0, i / 2 - 1, Init);
+			WHTmatrix.setMatrix(0, i / 2 - 1, i / 2, i - 1, Init);
+			WHTmatrix.setMatrix(i / 2, i - 1, 0, i / 2 - 1, Init);
+			WHTmatrix.setMatrix(i / 2, i - 1, i / 2, i - 1, Init.uminus());
 			Init = WHTmatrix;
 		}
-		WHTmatrix = WHTmatrix.times(1.0/Math.sqrt(size));
+		WHTmatrix = WHTmatrix.times(1.0 / Math.sqrt(size));
 		return WHTmatrix;
 	}
 }

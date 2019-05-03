@@ -6,6 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * This java class contains Main loader.
+ * 
+ * @author Yehor Safonov; id: 185942
+ */
+
 public class Main extends Application {
 
 	@Override
@@ -16,8 +22,10 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		Scene scene = new Scene(root);
+		primaryStage.setResizable(false);
+		primaryStage.setTitle("MPEG application (Yehor Safonov)");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

@@ -7,6 +7,12 @@ import java.awt.image.ColorModel;
 import Jama.Matrix;
 import ij.ImagePlus;
 
+/**
+ * This java class represents ColorTransform controller class.
+ * 
+ * @author Yehor Safonov; id: 185942
+ */
+
 public class ColorTransform {
 	private int red[][];
 	private int green[][];
@@ -136,7 +142,6 @@ public class ColorTransform {
 		return setImageFromRGB(x.getColumnDimension(), x.getRowDimension(), x, component);
 	}
 
-
 	public Matrix overSample(Matrix mat) {
 		Matrix newMat = new Matrix(mat.getRowDimension(), mat.getColumnDimension() * 2);
 		for (int i = 0; i < mat.getColumnDimension() * 2; i = i + 2) {
@@ -173,7 +178,7 @@ public class ColorTransform {
 		return quantMatrix8Brightness;
 	}
 
-	public Matrix  getQuantMatrix8Color(int quality) {
+	public Matrix getQuantMatrix8Color(int quality) {
 		int column = quantMatrix8Color.getColumnDimension();
 		int row = quantMatrix8Color.getRowDimension();
 		for (int i = 0; i < column; i++) {
@@ -197,30 +202,28 @@ public class ColorTransform {
 	}
 
 	public Matrix setMatrix(Matrix newMat, Matrix x, int k, int l, int n) {
-		for(int i = 0; i < n; i++)
-		{
-			for(int j = 0; j < n; j++)
-			{
-				double tmp = x.get(j,i);
-				newMat.set(l+j,k+i,tmp);
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				double tmp = x.get(j, i);
+				newMat.set(l + j, k + i, tmp);
 			}
-		}		
+		}
 		return newMat;
 	}
-	
+
 	public Matrix nSamplesTogether(Matrix newMat, Matrix x, int k, int l, int n) {
-		
-		for(int i = 0; i < n; i++){
-			for(int j = 0; j < n; j++){
-				double buffer = x.get(j,i);
-				if (Math.abs(buffer) < 1) buffer = 0;
-				newMat.set(l+j,k+i,buffer);
+
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < n; j++) {
+				double buffer = x.get(j, i);
+				if (Math.abs(buffer) < 1)
+					buffer = 0;
+				newMat.set(l + j, k + i, buffer);
 			}
-		}		
+		}
 		return newMat;
 	}
-	
-	
+
 	public double controlQuality(double quantizationMatrixValue, int quality) {
 		if (quality == 100) {
 			quantizationMatrixValue = 1;
